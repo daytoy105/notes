@@ -54,23 +54,16 @@
 		+ class -> className
 	+ html转义：
 		 `<div dangerouslySetInnerHTML={{__html:'&copy; 2018'}}/>`
-<<<<<<< HEAD
-=======
 	3) element
 		<br>元素是React中最小的构建单元。不同于浏览器的DOM元素，React的元素是一个普通对象，描述了对于一个DOM节点或者组件，在屏幕上呈现的样子。创建一个React元素的成本很低，使用React.createElement()。元素创建之后是不可变的
 		<br>React.createElement(type, props, children)，返回React Element,其中type的类型：string类型的标签、组件如(class/function)、Fragment
 		<br>React.cloneElement(type, props, children)，复制并返回React Element，其中type的类型为React元素(element)。 key和ref也将会一起拷贝.
->>>>>>> js
 ### React组件
 + 组件封装的基本思路就是面向对象思想。
 + React组件基本上由3个部分组成——属性(props)、状态(state)以及生命周期方法。
 + React的所有组件都继承自顶层类React.Component。它的定义非常简洁，只是初始化了React.Component方法，声明了props、context、refs等，并在原型上定义了setState和forceUpdate方法。
-<<<<<<< HEAD
-+ ES6 classes
-=======
 + 一个组件的创建可以通过多种方式声明，可以是带有一个render()方法的类，也可以是一个函数，这两种情况下，它都把属性props作为输入，把返回的一棵元素树作为输出显示在屏幕上。
 1. ES6 classes
->>>>>>> js
 	```javascript
   import React, { Component } from 'react';
   class Button extends Component {
@@ -91,11 +84,7 @@
     }
   }
 	```
-<<<<<<< HEAD
-+ 无状态函数
-=======
 2. 无状态函数
->>>>>>> js
 	```javascript
 	const Button = ({ color = 'blue', text = 'Confirm' }) => (
 	<button className={`btn btn-${color}`}>
@@ -103,10 +92,6 @@
 	  </button>
 	)
 	```
-<<<<<<< HEAD
-+ 无状态组件只传入props和context两个参数；也就是说，它不存在state，也没有生命周期方法，组件本身即是classes方式构建方法中的render方法。
-+ 在适合的情况下，我们都应该且必须使用无状态组件。无状态组件调用时不会创建新实例，它创建时始终保持了一个实例，避免了不必要的检查和内存分配，做到了内部优化。
-=======
 	+ 无状态组件只传入props和context两个参数；也就是说，它不存在state，也没有生命周期方法，组件本身即是classes方式构建方法中的render方法。
 	+ 在适合的情况下，我们都应该且必须使用无状态组件。无状态组件调用时不会创建新实例，它创建时始终保持了一个实例，避免了不必要的检查和内存分配，做到了内部优化。
 3. 条件渲染
@@ -154,18 +139,11 @@
 			);
 		}
 		```
->>>>>>> js
 ### React数据流
 + 在React中，数据是`自顶向下`单向流动的，即从父组件到子组件。这条原则让组件之间的关系变得简单且可预测。
 1. state
 	+ 当组件内部使用库内置的setState方法时，最大的表现行为就是该组件会尝试重新渲染。
 	+ setState是一个异步方法，一个生命周期内所有的setState方法会合并操作。
-<<<<<<< HEAD
-	+ state的数据是与`渲染`或`数据流`相关的，像`this.tm = setTimeout()`的`tm`的变量，可不放在state对象中。
-2. props
-	+ props是React用来让组件之间互相联系的一种机制。
-	+ 在propTypes支持的基本类型中，函数类型的检查是propTypes.func，对于布尔类型的检查是propTypes.bool。
-=======
 	+ 组件内部的私有变量，受组件控制。state对象中的数据，渲染和数据流相关的。如`var this.tm = setTimeout()`中的`tm`等与`渲染`或`数据流`无关的变量，不必放在state中。
 2. props
 	+ props是React用来让组件之间互相联系的一种机制。
@@ -208,7 +186,6 @@
 		  }
 		}
 		```
->>>>>>> js
 ### React生命周期
 &ensp;&ensp;&ensp;&ensp;React组件的生命周期根据广义定义描述，可以分为挂载、渲染和卸载这几个阶段。当渲染后的组件需要更新时，我们会重新去渲染组件，直至卸载。因此，我们可以把React生命周期分成两类：
 1) 当组件在挂载或卸载时；
@@ -230,13 +207,10 @@
 3. refs
 	+ 表示为对组件真正实例的引用，其实就是ReactDOM.render()返回的组件实例。
 	+ 但在组件内，JSX是不会返回一个组件的实例的，refs就是为此而生的，它是React组件中非常特殊的prop，可以附加到任何一个组件上，组件被调用时会新建一个该组件的实例，而refs就会指向这个实例。
-<<<<<<< HEAD
-=======
 	+ ref的使用场景
 		+ 操作focus事件、text文本选择、媒体播放事件
 		+ 触发动画
 		+ 与第三方库的集合(如jq)
->>>>>>> js
 	1) refs可以是一个回调函数，这个回调函数会在组件被挂载后立即执行
 		```javascript
 		import React, { Component } from 'react';
@@ -258,9 +232,6 @@
 		      </div>
 		    );
 		  }
-<<<<<<< HEAD
-		}
-=======
 		}// 这种方式 ，会被调用两次，首先是null, 然后才是DOM元素
 		// 方式二
 		import React, { Component } from 'react';
@@ -287,7 +258,6 @@
 		    );
 		  }
 		}// 这种方式 ，会被调用两次，首先是null, 然后才是DOM元素
->>>>>>> js
 		```
 	2) refs同样支持字符串。对于DOM操作，不仅可以使用findDOMNode获得该组件DOM，还可以使用refs获得组件内部的DOM。
 		```javascript
@@ -324,13 +294,6 @@ _______
 		+ bind方法
 			<br>  `<div onClick={this.handleClick.bind(this, id)}/>`
 		+ 双冒号 ::
-<<<<<<< HEAD
-			<br>只绑定，不传参  ` <div onClick={::this.handleClick}/>`
-		+ 构造器内声明
-			<br>这种绑定方式的好处在于仅需要进行一次绑定，而不需要每次调用事件监听器时去执行绑定操作
-		+ 箭头函数 自动绑定此函数作用域的this
-			<br>`<div onClick={() => this.handleClick(id)} />`
-=======
 			<br>只绑定，`不传参 `
 			<br> ` <div onClick={::this.handleClick}/>`
 		+ 构造器内声明
@@ -358,16 +321,11 @@ _______
 				)
 			}
 			```
->>>>>>> js
 3. 在React中使用原生事件
 	+ 在React中使用DOM原生事件时，一定要在组件卸载时手动移除，否则很可能出现内存泄漏的问题。而使用合成事件系统时则不需要，因为React内部已经帮你妥善地处理了
 	+ React合成事件 VS 原生事件
 		1) React的合成事件则并没有实现事件捕获，仅仅支持了事件冒泡机制
-<<<<<<< HEAD
-		2) 在React合成事件中，没有兼容性问题，(阻止事件默认及获取事件对象)
-=======
 		2) 在React合成事件中，没有兼容性问题。(阻止事件默认用preventDefault(),获取事件对象event)
->>>>>>> js
 4. 内存泄漏：
 	<br>不再用到的内存，没有及时释放，就叫做内存泄漏(memory leak)
 	<br>Chrome浏览器查看内存占用：
@@ -620,9 +578,6 @@ _______
 			  }
 			}
 			```
-<<<<<<< HEAD
-3. Immutable
-=======
 3. React.PureComponent
 	<br>PureComponent重新实现了shouldComponentUpdate()方法，新旧的props、state进行浅比较。
 	<br>若state/props的数据类型为不可变数据，则能正确渲染结果。若是为可变数据如：数据、对象等，则可能会出错，因为引用类型的新旧state/props都指向都一个内存地址。
@@ -658,7 +613,6 @@ _______
 	};
 	```
 4. Immutable
->>>>>>> js
 	+ 在传递数据时，可以直接使Immutable Data来进一步提升组件的渲染性能。JavaScript中的对象一般是可变的(mutable)，因为使用了引用赋值，新的对象简单地引用了原始对象，改变新的对象将影响到原始对象。
 	+ Immutable Data就是一旦创建，就不能再更改的数据。对Immutable对象进行修改、添加或删除操作，都会返回一个新的Immutable对象。Immutable实现的原理是持久化的数据结构(persistent datastructure)，也就是使用旧数据创建新数据时，要保证旧数据同时可用且不变。同时为了避免深拷贝把所有节点都复制一遍带来的性能损耗，Immutable使用了结构共享(structural sharing)，即如果对象树中一个节点发生变化，只修改这个节点和受它影响的父节点，其他节点则进行共享。
 	+ 创建：` immutable.fromJS({uid:'123'})`
@@ -748,11 +702,7 @@ _______
 		  }
 		}
 		```
-<<<<<<< HEAD
-4. key
-=======
 5. key
->>>>>>> js
 	+ 它是用来标识当前项的唯一性的props，对key有一个原则，那就是独一无二，且能不用遍历或随机值就不用，除非列表内容也并不是唯一的表示，且没有可以相匹配的属性。
 	+ 关于key，我们还需要知道的一种情况是，有两个子组件需要渲染的时候，我们没法给它们设key。这时需要用到React插件createFragment来解决
 		```javascript
@@ -769,11 +719,7 @@ _______
 		}
 		/*first和second两个prop的key就是我们设置对象的 key。*/
 		```
-<<<<<<< HEAD
-5. react-addons-pref
-=======
 6. react-addons-pref
->>>>>>> js
 	+ react-addons-perf是官方提供的插件。通过Perf.start()和Perf.stop()两个API设置开始和结束的状态来作分析
 ### 动画
 1. CSS动画与JavaScript动画
@@ -874,13 +820,8 @@ _________
 	1) 阶段一：MOUNTING
 		+ mountComponent负责管理生命周期中的getInitialState、componentWillMount、render和componentDidMount。
 		+ 由于getDefaultProps是通过构造函数进行管理的，所以也是整个生命周期中最先开始执行的。而mountComponent只能望洋兴叹，无法调用到getDefaultProps。这就解释了为何getDefaultProps只执行一次。
-<<<<<<< HEAD
-		+ 若存在componentWillMount，则执行。如果此时在componentWillMount中调用setState方法，是不会触发re-render的，而是会进行state合并，且inst.state = this._processPendingState(inst.props, inst.context)是在componentWillMount之后执行的，因此componentWillMount中的this.state 并不是最新的，在render中才可以获取更新后的this.state
-		+ 因此，React是利用更新队列this._pendingStateQueue以及更新状态this._pendingReplaceState和this._pendingForceUpdate来实现setState的异步更新机制
-=======
 		+ 若存在componentWillMount，则执行。如果此时在componentWillMount中调用setState方法，是不会触发re-render的，而是会进行state合并，且inst.state = this.\_processPendingState(inst.props, inst.context)是在componentWillMount之后执行的，因此componentWillMount中的this.state 并不是最新的，在render中才可以获取更新后的this.state。
 		+ 因此，React是利用更新队列this.\_pendingStateQueue以及更新状态this.\_pendingReplaceState和this.\_pendingForceUpdate来实现setState的异步更新机制
->>>>>>> js
 		+ mountComponent本质上是通过递归渲染内容的，由于递归的特性，父组件的componentWillMount在其子组件的componentWillMount之前调用，而父组件的componentDidMount在其子组件的componentDidMount之后调用
 			<br>`P componentWillMount -> P render -> C componentWillMount ->C render -> C componentDidMount -> P componentDidMount`
 	2) 阶段二：RECEIVE_PROPS
@@ -900,13 +841,8 @@ _________
 	+ setState通过一个队列机制实现state更新。当执行setState时，会将需要更新的state合并后放入状态队列，而不会立刻更新this.state，队列机制可以高效地批量更新state。
 2. setState循环调用风险
 	+ 当调用setState时，实际上会执行enqueueSetState方法，并对partialState以及_pendingStateQueue更新队列进行合并操作，最终通过enqueueUpdate执行state更新。
-<<<<<<< HEAD
-	+ 而performUpdateIfNecessary方法会获取_pendingElement、_pendingStateQueue、_pendingForceUpdate，并调用receiveComponent和updateComponent方法进行组件更新。
-	+ 如果在shouldComponentUpdate或componentWillUpdate方法中调用setState ，此时this._pendingStateQueue != null，则performUpdateIfNecessary方法就会调用updateComponent方法进行组件更新，但updateComponent方法又会调用shouldComponentUpdate和componentWillUpdate方法，因此造成循环调用，使得浏览器内存占满后崩溃。
-=======
 	+ 而performUpdateIfNecessary方法会获取_pendingElement、\_pendingStateQueue、\_pendingForceUpdate，并调用receiveComponent和updateComponent方法进行组件更新。
 	+ 如果在shouldComponentUpdate或componentWillUpdate方法中调用setState ，此时this.\_pendingStateQueue != null，则performUpdateIfNecessary方法就会调用updateComponent方法进行组件更新，但updateComponent方法又会调用shouldComponentUpdate和componentWillUpdate方法，因此造成循环调用，使得浏览器内存占满后崩溃。
->>>>>>> js
 	+ setState的源码
 		```javascript
 		// 更新 state
@@ -1287,11 +1223,7 @@ _________
 		  );
 		}
 		```
-<<<<<<< HEAD
-	+ 用法三： `<></>`
-=======
 	+ 用法三： `<></>`  `babel 7 `
->>>>>>> js
 		```javascript
 		function ListItem({ item }) {
 		  return (
@@ -1309,84 +1241,30 @@ _________
 	  return 'Look ma, no spans!';
 	}
 	```
-<<<<<<< HEAD
-### Portals
-+ react-dom新的的方法 : Portals
-+ Portals提供了一种很好的方法，将子节点渲染到父组件DOM层次结构之外的DOM节点
-	<br> `ReactDOM.createPortal(child, container)`
-+ 对于portal的一个典型用例是当父组件有overflow: hidden或z-index样式，但你需要子组件能够在视觉上"跳出(break out)"其容器。例如，对话框、hovercards以及提示框。
-	```javascript
-	render() {
-	  return ReactDOM.createPortal(
-	    this.props.children,
-	    domNode,
-	  );
-	}
-	```
-### hydrate
-+ react-dom新的的方法
-	ReactDOM.hydrate(element, container[, callback])
-+ 与 render() 相同，但用于混合容器，该容器的HTML内容是由ReactDOMServer渲染的。React将尝试将事件监听器附加到现有的标记。
-=======
 
->>>>>>> js
 ### 错误处理
 1. 简介
 + 错误边界(Error Boundaries)是React组件，它可以在子组件树的任何位置捕获JavaScript错误，记录这些错误，并显示一个备用UI，而不是使整个组件树崩溃。 错误边界在渲染，生命周期方法以及整个组件树下的构造函数中捕获错误。
 + componentDidCatch(error, info): 新生命周期方法
-<<<<<<< HEAD
-+  错误边界(Error Boundaries) 仅可以捕获其子组件的错误。错误边界无法捕获其自身的错误。如果一个错误边界无法渲染错误信息，则错误会向上冒泡至最接近的错误边界。这也类似于 JavaScript 中 catch {} 的工作机制。
-=======
 + 错误边界(Error Boundaries)仅可以捕获其子组件的错误。错误边界无法捕获其自身的错误。如果一个错误边界无法渲染错误信息，则错误会向上冒泡至最接近的错误边界。这也类似于JavaScript中catch{} 的工作机制。
->>>>>>> js
 + 错误边界无法捕获如下错误:
 	1) 事件处理
 	2) 异步代码 （例如 setTimeout 或 requestAnimationFrame 回调函数）
 	3) 服务端渲染
 	4) 错误边界自身抛出来的错误 （而不是其子组件）
 2. 组件栈追踪
-<<<<<<< HEAD
-	+ React 16 会将渲染期间所有在开发环境下的发生的错误打印到控制台，即使应用程序意外的将其掩盖。除了错误信息和JavaScript栈外，其还提供了组件栈追踪。现在你可以准确地查看发生在组件树内的错误信息，也可以在组件堆栈中查看文件名和行数
-=======
 	+ React 16会将渲染期间所有在开发环境下的发生的错误打印到控制台，即使应用程序意外的将其掩盖。除了错误信息和JavaScript栈外，其还提供了组件栈追踪。现在你可以准确地查看发生在组件树内的错误信息，也可以在组件堆栈中查看文件名和行数
->>>>>>> js
 	 <br> bable 配置插件： babel-plugin-transform-react-jsx-source
 	+ 显示在堆栈跟踪中的组件名称取决于Function.name属性。
 3. 为何不使用 try/catch
 	+ try/catch仅能在命令式代码（imperative code）下可用。然而，React组件是声明式的并且具体指出声明什么需要被渲染：
 ### 自定义DOM属性
-<<<<<<< HEAD
-+ 支持非标准的自定义DOM属性，在之前的版本中，React会忽略无法识别的HTML和SVG属性，自定义属性只能通过data-*形式添加，现在它会把这些属性直接传递给DOM，这个改动让React可以去掉属性白名单，从而减少了文件大小。但当DOM传递的自定义属性是函数类型或event handler类型时，也会被React忽略掉。
-=======
 + 支持非标准的自定义DOM属性，在之前的版本中，React会忽略无法识别的HTML和SVG属性，自定义属性只能通过data-\*形式添加，现在它会把这些属性直接传递给DOM，这个改动让React可以去掉属性白名单，从而减少了文件大小。但当DOM传递的自定义属性是函数类型或event handler类型时，也会被React忽略掉。
->>>>>>> js
 ### 更好的服务器端渲染
 + 提升服务端渲染性能，React 16的SSR被完全重写，新的实现非常快，接近3倍性能于React 15，现在提供一种流模式streaming，可以更快地把渲染的字节发送到客户端。
 ### 更小的体积
 + 减少了约 32% 的大小
 ### refs  // v16.3
-<<<<<<< HEAD
-1. 转发refs给DOM组件
-<br>Ref转发是一种选择性加入的功能，可让某些组件接收他们收到的ref，并将其向下传递（换句话说，“转发”）给子组件。
-	```javascript
-	const FancyButton = React.forwardRef((props, ref) => (
-	  <button ref={ref} className="FancyButton">
-	    {props.children}
-	  </button>
-	));
-	const ref = React.createRef();
-	<FancyButton ref={ref}>Click me!</FancyButton>;
-	//调用
-	ref.current.focus();
-	```
-2. 在高阶组件中转发refs
-### 上下文(Context)   // v16.3
-1. React.createContext
-	`const {Provider, Consumer} = React.createContext(defaultValue);`
-	+ 创建一个 { Provider, Consumer } 对。当 React 渲染 context Consumer 时，它将从组件树中匹配最接近的 Provider 中读取当前的 context 值。
-	+ defaultValue 参数 仅 当 Consumer(使用者) 在树中没有匹配的 Provider(提供则) 时使用它。这有助于在不封装它们的情况下对组件进行测试。注意：将 undefined 作为 Provider(提供者) 值传递不会导致 Consumer(使用者) 使用 defaultValue 。
-	+ 通过使用与Object.is比较新值和旧值来确定value属性变化。
-=======
 <br> 在JSX中ref是不会传递给其子组件的，如果把传递ref属性，使用React.forwardRef()
 <br> React新的创建ref的方式：`React.createRef()`
 1. React 16以前的ref(详情见前面refs部分)
@@ -1466,7 +1344,6 @@ _________
 	+ defaultValue参数 仅当 Consumer(使用者)在树中没有匹配的Provider(提供则) 时使用它。这有助于在不封装它们的情况下对组件进行测试。注意：将undefined作为Provider(提供者)值传递不会导致Consumer(使用者)使用defaultValue 。
 	+ 通过使用与Object.is比较新值和旧值来确定value属性变化。
 	+ context常用场景：设置语言环境、地区偏好、UI主题、数据缓存等
->>>>>>> js
 2. 使用多个context
 <br>为了保持context的快速重新渲染，React需要使每个context Consumer成为树中的一个独立节点。
 	```javascript
@@ -1514,11 +1391,7 @@ _________
 3. 在生命周期方法中访问Context
 	<br>在生命周期方法中访问context值是一种相对常见的用例。不是将context添加到每个生命周期方法中，你只需将它作为props，然后像使用props一样使用它即可。
 4. 高阶组件中的Context
-<<<<<<< HEAD
-	<br>某些类型的 context 被许多组件（例如 theme 或 localization ）使用。使用 `<Context.Consumer>`元素显示地封装每个依赖项是冗余的
-=======
 	<br>某些类型的context被许多组件（例如theme或localization）使用。使用 `<Context.Consumer>`元素显示地封装每个依赖项是冗余的
->>>>>>> js
 	```javascript
 	const {ThemeContext} = React.createContext('light');
 	const withTheme = (Component)=> (props)=> (
@@ -1559,9 +1432,6 @@ _________
 + getDerivedStateFromProps：保证与即将到来的异步渲染模式的兼容
 + Facebook在react16增加fiber结构，其实并不是为了减少组件的渲染时间，事实上也并不会减少，最重要的是现在可以使得一些更高优先级的任务，如用户的操作能够优先执行，提高用户的体验，至少用户不会感觉到卡顿~
 ### Pointer Events   // v16.4
-<<<<<<< HEAD
-_________
-=======
 
 ### React.Component
 1. 组件生命周期
@@ -1619,7 +1489,6 @@ _________
 	<br>`ReactDOM.unmountComponentAtNode(container)`
 _____
 
->>>>>>> js
 # 优化技巧
 1. 条件渲染时
 	<br>可以用变量来存储元素。这可以帮助您有条件地渲染组件的一部分，而输出的其余部分不会更改。
