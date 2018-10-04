@@ -54,10 +54,10 @@
 		+ class -> className
 	+ html转义：
 		 `<div dangerouslySetInnerHTML={{__html:'&copy; 2018'}}/>`
-	3) element
-		<br>元素是React中最小的构建单元。不同于浏览器的DOM元素，React的元素是一个普通对象，描述了对于一个DOM节点或者组件，在屏幕上呈现的样子。创建一个React元素的成本很低，使用React.createElement()。元素创建之后是不可变的
-		<br>React.createElement(type, props, children)，返回React Element,其中type的类型：string类型的标签、组件如(class/function)、Fragment
-		<br>React.cloneElement(type, props, children)，复制并返回React Element，其中type的类型为React元素(element)。 key和ref也将会一起拷贝.
+3) element
+	<br>元素是React中最小的构建单元。不同于浏览器的DOM元素，React的元素是一个普通对象，描述了对于一个DOM节点或者组件，在屏幕上呈现的样子。创建一个React元素的成本很低，使用React.createElement()。元素创建之后是不可变的
+	<br>React.createElement(type, props, children)，返回React Element,其中type的类型：string类型的标签、组件如(class/function)、Fragment
+	<br>React.cloneElement(type, props, children)，复制并返回React Element，其中type的类型为React元素(element)。 key和ref也将会一起拷贝.
 ### React组件
 + 组件封装的基本思路就是面向对象思想。
 + React组件基本上由3个部分组成——属性(props)、状态(state)以及生命周期方法。
@@ -65,24 +65,24 @@
 + 一个组件的创建可以通过多种方式声明，可以是带有一个render()方法的类，也可以是一个函数，这两种情况下，它都把属性props作为输入，把返回的一棵元素树作为输出显示在屏幕上。
 1. ES6 classes
 	```javascript
-  import React, { Component } from 'react';
-  class Button extends Component {
-    constructor(props) {
-      super(props);
-    }
-    static defaultProps = {
-      color: 'blue',
-      text: 'Confirm',
-    };
-    render() {
-      const { color, text } = this.props;
-      return (
-        <button className={`btn btn-${color}`}>
-          <em>{text}</em>
-        </button>
-      );
-    }
-  }
+	import React, { Component } from 'react';
+	class Button extends Component {
+	  constructor(props) {
+	    super(props);
+	  }
+	  static defaultProps = {
+	    color: 'blue',
+	    text: 'Confirm',
+	  };
+	  render() {
+	    const { color, text } = this.props;
+	    return (
+	      <button className={`btn btn-${color}`}>
+	        <em>{text}</em>
+	      </button>
+	    );
+	  }
+	}
 	```
 2. 无状态函数
 	```javascript
@@ -98,17 +98,17 @@
 	1) 元素变量方式
 		```javascript
 		render(){
-			var ele = ''
-			if (isLoggedIn) {
-			  ele = <UserGreeting />;
-			}else{
-			  ele = <GuestGreeting />;
-			}
+		  var ele = ''
+		  if (isLoggedIn) {
+		    ele = <UserGreeting />;
+		  }else{
+		    ele = <GuestGreeting />;
+		  }
 		  return(
-			  <div>
-				  { ele }
-				</div>
-			);
+		    <div>
+		      { ele }
+		    </div>
+		  );
 		}
 		```
 	2) 行内判断的方式 &&
@@ -160,25 +160,27 @@
 		}));
 		```
 	+ Render Props
-		<br> 组件中的render()方法返回一个React元素并调用，常见的有React-Router。
-		<br>它能够动态决定什么需要渲染的，并有效地改变它的渲染结果。
+		+ 组件中的render()方法返回一个React元素并调用，常见的有React-Router。
+		+ 它能够动态决定什么需要渲染的，并有效地改变它的渲染结果。
 		```javascript
-		<Mouse render={mouse => (
-      <Cat mouse={mouse} />
-    )}/>
+		render(){
+		  return (
+		    <Mouse render={mouse => (
+		      <Cat mouse={mouse} />
+		    )}/>
+		  )
+		}
 		```
-		<br>和PureComponent使用时要注意，若<Mouse>组件继承自PureComponent，则当前组件调用时，每次都会重新渲染render函数，<Mouse>组件的shouldComponentUpdate将返回true。解决方法，可将props定义为实例方法。
+		+ 和PureComponent使用时要注意，若<Mouse>组件继承自PureComponent，则当前组件调用时，每次都会重新渲染render函数，<Mouse>组件的shouldComponentUpdate将返回true。解决方法，可将props定义为实例方法。
 		```javascript
 		class MouseTracker extends React.Component {
 		  constructor(props) {
 		    super(props);
 		    this.renderTheCat = this.renderTheCat.bind(this);
 		  }
-
 		  renderTheCat(mouse) {
 		    return <Cat mouse={mouse} />;
 		  }
-
 		  render() {
 		    return (
 		      <Mouse render={this.renderTheCat} />
@@ -232,7 +234,7 @@
 		      </div>
 		    );
 		  }
-		}// 这种方式 ，会被调用两次，首先是null, 然后才是DOM元素
+		}  // 这种方式 ，会被调用两次，首先是null, 然后才是DOM元素
 		// 方式二
 		import React, { Component } from 'react';
 		class App extends Component {
@@ -257,7 +259,8 @@
 		      </div>
 		    );
 		  }
-		}// 这种方式 ，会被调用两次，首先是null, 然后才是DOM元素
+		}
+		/* 这种方式 ，会被调用两次，首先是null, 然后才是DOM元素 */
 		```
 	2) refs同样支持字符串。对于DOM操作，不仅可以使用findDOMNode获得该组件DOM，还可以使用refs获得组件内部的DOM。
 		```javascript
@@ -605,11 +608,11 @@ _______
 	handleClick() {
 	  this.setState(state => ({
 	    words: [...state.words, 'marklar'],
-			//words: state.words.concat(['marklar']),
-			list: {...state.list, {name:'haha',age:'23'}},
-			//list: Object.assign({},state.list,{name:'haha',age:'23'}),
+		  //words: state.words.concat(['marklar']),
+		  list: {...state.list, {name:'haha',age:'23'}},
+		  //list: Object.assign({},state.list,{name:'haha',age:'23'}),
 	  }));
-		// 使用concat()的原因是，concat()方法不修改原数组，push()会修改原数组
+		//使用concat()的原因是，concat()方法不修改原数组，push()会修改原数组
 	};
 	```
 4. Immutable
@@ -1277,8 +1280,8 @@ _________
 	<br>不能给函数式组件添加ref属性，因为函数式组件没有实例，但函数式组件里面的HTML元素和类组件使用ref属性是可以的
 	<br>子组件暴露ref给父组件：当父组件需要触发子组件的focus等事件、或者需要获取子组件的节点数或位置时
 3. React.forwardRef
-	2) 转发refs给DOM组件
-	<br>Ref转发是一种选择性加入的功能，可让某些组件接收他们收到的ref，并将其向下传递（换句话说，“转发”）给子组件。
+	1) 转发refs给DOM组件
+		+ Ref转发是一种选择性加入的功能，可让某些组件接收他们收到的ref，并将其向下传递（换句话说，“转发”）给子组件。
 		```javascript
 		const FancyButton = React.forwardRef((props, ref) => (
 		  <button ref={ref} className="FancyButton">
@@ -1290,33 +1293,28 @@ _________
 		//调用
 		ref.current.focus();
 		```
-	3) 在高阶组件中转发refs
-		<br>在高阶组件中传递ref, ref指向的是最外层的组件，而不是被包裹的组件
+	2) 在高阶组件中转发refs
+		+ 在高阶组件中传递ref, ref指向的是最外层的组件，而不是被包裹的组件
 		```javascript
-		const logProps = (WrappedComponent)=>
-	  class LogProps extends React.Component {
-	    componentDidUpdate(prevProps) {
-	      console.log('old props:', prevProps);
-	      console.log('new props:', this.props);
-	    }
-	    render() {
-	      return <WrappedComponent {...this.props} />;
-	    }
-	  }
+		const logProps = (WrappedComponent) =>
+		  class LogProps extends React.Component {
+		    componentDidUpdate(prevProps) {
+		      console.log('old props:', prevProps);
+		      console.log('new props:', this.props);
+		    }
+		    render() {
+		      return <WrappedComponent {...this.props} />;
+		    }
+		  }
 		@logProps
 		export default class FancyButton extends React.Component {
 		  focus() {}
 		}
-		//
 		import FancyButton from './FancyButton';
 		const ref = React.createRef();
-		<FancyButton
-		  label="Click Me"
-		  handleClick={handleClick}
-		  ref={ref}
-		/>;
+		<FancyButton label="Click Me" handleClick={handleClick} ref={ref} />;
 		/*
-			ref指向的是LogPorps组件，而不是FancyButton组件
+		ref指向的是LogPorps组件，而不是FancyButton组件
 		*/
 		```
 		<br>方法二
