@@ -114,29 +114,29 @@
 	2) 行内判断的方式 &&
 		```javascript
 		render(){
-			var data = ['React', 'Re: React', 'Re:Re: React'];
+		  var data = ['React', 'Re: React', 'Re:Re: React'];
 		  return(
-			  <div>
-				  {
-					  data.length &&
-						<h2>You have {data.length} unread messages.</h2>
-				  }
-				</div>
-			);
+		    <div>
+		      {
+		        data.length &&
+		        <h2>You have {data.length} unread messages.</h2>
+		      }
+		    </div>
+		  );
 		}
 		```
 		3) 行内判断的方式： 三元判断
 		```javascript
 		render(){
 		  return(
-			  <div>
-				  {
-					  data.length?
-						<h2>You have {data.length} unread messages.</h2>
-						:null
-				  }
-				</div>
-			);
+		    <div>
+		      {
+		        data.length?
+		        <h2>You have {data.length} unread messages.</h2>
+		        :null
+		      }
+		    </div>
+		  );
 		}
 		```
 ### React数据流
@@ -318,10 +318,10 @@ _______
 		+ 在class上绑定this的方式：`不能传递参数`
 			```javascript
 			class Test extends component{
-				handleClick = () =>{}
-				render(
-					<div onClick={this.handleClick} />
-				)
+			  handleClick = () =>{}
+			  render(
+			    <div onClick={this.handleClick} />
+			  )
 			}
 			```
 3. 在React中使用原生事件
@@ -608,11 +608,11 @@ _______
 	handleClick() {
 	  this.setState(state => ({
 	    words: [...state.words, 'marklar'],
-		  //words: state.words.concat(['marklar']),
-		  list: {...state.list, {name:'haha',age:'23'}},
-		  //list: Object.assign({},state.list,{name:'haha',age:'23'}),
+	    //words: state.words.concat(['marklar']),
+	    list: {...state.list, { name: 'haha', age: '23' } },
+	    //list: Object.assign({},state.list,{name:'haha',age:'23'}),
 	  }));
-		//使用concat()的原因是，concat()方法不修改原数组，push()会修改原数组
+	  //使用concat()的原因是，concat()方法不修改原数组，push()会修改原数组
 	};
 	```
 4. Immutable
