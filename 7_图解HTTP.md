@@ -112,7 +112,7 @@ ____________
 		+ 303状态码和302 Found状态码有着相同的功能，但303状态码明确表示客户端应当采用GET方法获取资源，这点与302状态码有区别。
 		+ 比如，当使用POST访求访问CGI程序，其执行后的处理结果是希望客户端能以GET方法重定向到另一个URI上去时，返回303状态码。
 	4) 304 Not Modified
-		该状态码表示 客户端发送附带条件的请求(请求报文中包含if-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since中的任一首部)时，服务器端允许请求访问资源，但满足条件的情况。304状态码返回时，不包含任何响应的主体部分，304虽然被划分在3XX类别中，但和重定向没有关系。
+		<br>该状态码表示 客户端发送附带条件的请求(请求报文中包含if-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since中的任一首部)时，服务器端允许请求访问资源，但满足条件的情况。304状态码返回时，不包含任何响应的主体部分，304虽然被划分在3XX类别中，但和重定向没有关系。
 	5) 307 Temporary Redirect
 		+ 临时重定向。该状态码与302 Found有着相同的含义。尽管302标准禁止POST变换成GET，但实际使用时大家并不遵守。
 		+ 307会遵照浏览器标准，不会从POST变成GET。但是，对于处理响应时的行为，每种浏览器有可能出现不同的情况。
@@ -272,7 +272,7 @@ ______________
 	3) Proxy-Authenticate
 		<br>首部字段Proxy-Authenticate会把由代理服务器所要求的认证信息发送给客户端。
 	4) WWW-Authenticate
-		<br>首部字段WWW-Authenticate用于HTTP访问认证。它会告知客户端适用于访问请求URI所指定资源的认证方案(Basic或是Digest)和带参数提示的质询(challenge)。状态码401 Unauthorized 响应中，肯定带胡首部字段WWW-Authenticate。
+		<br>首部字段WWW-Authenticate用于HTTP访问认证。它会告知客户端适用于访问请求URI所指定资源的认证方案(Basic或是Digest)和带参数提示的质询(challenge)。状态码401 Unauthorized响应中，肯定带有首部字段WWW-Authenticate。
 5. 实体首部
 	<br>实体首部字段是包含在请求报文和响应报文中的实体部分所使用的首部，用于补充内容的更新时间等与实体相关的信息。
 	1) Allow
@@ -420,7 +420,7 @@ _________
 2. 因输出值转义不完全引发的安全漏洞
 	1) 实施Web应用的安全对策大致分为以下两部分
 		+ 客户端验证
-			<br>多数情况下JavaScript在客户端验证数据。可是在客户端允许篡改数据或关闭JavaScript,不适合将JavaScript验证作为安全的防范对策。保留客户端验证只是为了迟早地辨识输入错误，起到提高UI体验的作用。
+			<br>多数情况下JavaScript在客户端验证数据。可是在客户端允许篡改数据或关闭JavaScript,不适合将JavaScript验证作为安全的防范对策。保留客户端验证只是为了更早地辨识输入错误，起到提高UI体验的作用。
 		+ Web应用端(服务器端)的验证
 			+ 输入值验证
 			+ 输出值转义

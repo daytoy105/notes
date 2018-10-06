@@ -55,9 +55,9 @@
 	+ html转义：
 		 `<div dangerouslySetInnerHTML={{__html:'&copy; 2018'}}/>`
 3) element
-	<br>元素是React中最小的构建单元。不同于浏览器的DOM元素，React的元素是一个普通对象，描述了对于一个DOM节点或者组件，在屏幕上呈现的样子。创建一个React元素的成本很低，使用React.createElement()。元素创建之后是不可变的
-	<br>React.createElement(type, props, children)，返回React Element,其中type的类型：string类型的标签、组件如(class/function)、Fragment
-	<br>React.cloneElement(type, props, children)，复制并返回React Element，其中type的类型为React元素(element)。 key和ref也将会一起拷贝.
+	+ 元素是React中最小的构建单元。不同于浏览器的DOM元素，React的元素是一个普通对象，描述了对于一个DOM节点或者组件，在屏幕上呈现的样子。创建一个React元素的成本很低，使用React.createElement()。元素创建之后是不可变的。
+	+ React.createElement(type, props, children)，返回React元素,其中type的类型：string类型的标签、组件如(class/function)、Fragment。
+	+ React.cloneElement(type, props, children)，复制并返回React元素，其中type的类型为React元素(element)。 key和ref也将会一起拷贝。
 ### React组件
 + 组件封装的基本思路就是面向对象思想。
 + React组件基本上由3个部分组成——属性(props)、状态(state)以及生命周期方法。
@@ -125,7 +125,7 @@
 		  );
 		}
 		```
-		3) 行内判断的方式： 三元判断
+	3) 行内判断的方式： 三元判断
 		```javascript
 		render(){
 		  return(
@@ -241,8 +241,8 @@
 		  constructor(props){
 		    super(props);
 		    this.handleClick = this.handleClick.bind(this);
-				this.myTextInput = null;
-				this.setTextInputRef = element => {
+		    this.myTextInput = null;
+		    this.setTextInputRef = element => {
 		      this.myTextInput = element;
 		    };
 		  }
@@ -270,7 +270,7 @@
 		  componentDidMount() {
 		    //myComp是Comp的一个实例，因此需要用findDOMNode转换为相应的DOM
 		    const myComp = this.refs.myComp;
-		    const dom = findDOMNode(myComp);
+		    const dom = ReactDOM.findDOMNode(myComp);
 		  }
 		  render() {
 		    return (
@@ -282,7 +282,7 @@
 		}
 		```
 4. React之外的DOM操作
-&ensp;&ensp;&ensp;&ensp;React的声明式渲染机制把复杂的DOM操作抽象为简单的state和props的操作，因此避免了很多直接的DOM操作。不过，仍然有一些DOM操作是React无法避免或者正在努力避免的。举一个明显的例子，如果要调用HTML5 Audio/Video的play方法和input的focus方法，React就无能为力了，这时只能使用相应的DOM方法来实现。
+<br>&ensp;&ensp;&ensp;&ensp;React的声明式渲染机制把复杂的DOM操作抽象为简单的state和props的操作，因此避免了很多直接的DOM操作。不过，仍然有一些DOM操作是React无法避免或者正在努力避免的。举一个明显的例子，如果要调用HTML5 Audio/Video的play方法和input的focus方法，React就无能为力了，这时只能使用相应的DOM方法来实现。
 _______
 # 漫谈React
 ### 事件系统
@@ -303,14 +303,14 @@ _______
 			<br>这种绑定方式的好处在于仅需要进行一次绑定，而不需要每次调用事件监听器时去执行绑定操作
 			```javascript
 			class Test extends component{
-				constructor(proos){
-					super(props);
-					this.state = {};
-					this.handleClick = this.handleClick.bind(this)
-				}
-				render(
-					<div onClick={this.handleClick} />
-				)
+			  constructor(proos){
+			    super(props);
+			    this.state = {};
+			    this.handleClick = this.handleClick.bind(this)
+			  }
+			  render(
+			    <div onClick={this.handleClick} />
+			  )
 			}
 			```
 		+ 箭头函数 自动绑定此函数作用域的this
@@ -743,29 +743,34 @@ _______
 		2) 自动mock模拟依赖包，达到单元测试的目的
 		3) 并不需要真实DOM环境执行，而是JSDOM模拟的DOM；
 		4) 多进程并行执行测试。
+	+ 当使用Jest来测试React组件时，还要引入react-dom/test-utils插件，用于模拟浏览器事件和对DOM进行校验。它提供的常用方法如下
+		1) Simulate.{eventName} (DOMElement element, [object eventData])：模拟触发事件。
+		2) renderIntoDocument(ReactElement instance)：渲染React组件到文档中，这里的文档节点由JSDOM提供。
+		3) findRenderedDOMComponentWithClass(ReactComponent tree, string className)：从渲染的DOM树中查找含有class的节点。
+		4) findRenderedDOMComponentWithTag(ReactComponent tree, function componentClass)：从渲染的 DOM 树中找到指定组件的节点。
 	+ 使用Jest测试组件非常容易。它既可以模拟渲染DOM节点，也可以模拟触发DOM事件。在大部分情况下，它已经很好用。
 		```javascript
 		jest.unmock('../tab.js');
 		import React from 'react';
 		import ReactDOM from 'react-dom';
-		import TestUtils from 'react-addons-test-utils';
+		import TestUtils from 'react-dom/test-utils';
 		import Tab from '../Tab';
 		describe('Tab', () => {
-		 it('render the tab content', () => {
-		 // 根据 data 渲染出 Tab 内容
-		 const tab = TestUtils.renderIntoDocument(
-		  <Tabs classPrefix={'tabs'} defaultActiveIndex={0} className="ui-tabs">
-		    <TabPane order="0" tab={'Tab 1'}>第一个 Tab 里的内容</TabPane>
-		    <TabPane order="1" tab={'Tab 2'}>第二个 Tab 里的内容</TabPane>
-		    <TabPane order="2" tab={'Tab 3'}>第三个 Tab 里的内容</TabPane>
-		   </Tabs>
-		 );
-		 const tabNode = ReactDOM.findDOMNode(tab);
-		 // 验证渲染出 3 个 Tab
-		 expect(tab.querySelectorAll('.tabs-tab').length).toEqual(3);
-		 // 验证默认选中第一个 Tab，即索引为 0 的子元素含有 active 的 class
-		 expect(tab.querySelectorAll('.tabs-tab')[0].classList.contains('tabs-active')).toBe(true);
-		 });
+		  it('render the tab content', () => {
+		  // 根据 data 渲染出 Tab 内容
+		  const tab = TestUtils.renderIntoDocument(
+		    <Tabs classPrefix={'tabs'} defaultActiveIndex={0} className="ui-tabs">
+		      <TabPane order="0" tab={'Tab 1'}>第一个 Tab 里的内容</TabPane>
+		      <TabPane order="1" tab={'Tab 2'}>第二个 Tab 里的内容</TabPane>
+		      <TabPane order="2" tab={'Tab 3'}>第三个 Tab 里的内容</TabPane>
+		    </Tabs>
+		  );
+		  const tabNode = ReactDOM.findDOMNode(tab);
+		  // 验证渲染出 3 个 Tab
+		  expect(tab.querySelectorAll('.tabs-tab').length).toEqual(3);
+		  // 验证默认选中第一个 Tab，即索引为 0 的子元素含有 active 的 class
+		  expect(tab.querySelectorAll('.tabs-tab')[0].classList.contains('tabs-active')).toBe(true);
+		  });
 		});
 		//验证了渲染后，还需要验证点击后能切换到新的 Tab：
 		describe('Tab', () => {
@@ -776,18 +781,49 @@ _______
 		      <TabPane order="1" tab={'Tab 2'}>第二个 Tab 里的内容</TabPane>
 		      <TabPane order="2" tab={'Tab 3'}>第三个 Tab 里的内容</TabPane>
 		     </Tabs>
-		  );
-		   // 模拟点击第三个标签
-		  TestUtils.Simulate.click(
+		    );
+		    // 模拟点击第三个标签
+		    TestUtils.Simulate.click(
 		      tab.querySelectorAll('.tabs-tab')[2]
-		  );
-		   // 第一个标签取消选中，第三个标签被选中
+		    );
+		    // 第一个标签取消选中，第三个标签被选中
 		    expect(tab.querySelectorAll('.tabs-tab ')[0].classList.contains('tabs-active')).toBe(false);
 		    expect(tab.querySelectorAll('.tabs-tab')[2].classList.contains('tabs-active')).toBe(true);
 		  });
 		});
 		```
-2. 自动化测试
+2. 浅渲染机制
+	+ 浅渲染（shallow rendering）很有趣，意思就是只渲染组件中的第一层，这样测试执行器就不需要关心DOM和执行环境了。
+	+ 在实际开发中，组件的层级非常深，所以测试顶层组件时，如果需要把所有子组件全部渲染出来，成本变得非常高。因为 React 组件良好的封装性，测试组件时，大部分测试只需要关注组件本身，它的子组件测试应该在子组件对应的测试代码里做。这样测试执行得很快。
+	+ 假如一个组件内部有个非常复杂的子组件 ComplexComponent：
+		```javascript
+		function MyComponent() {
+		  return(
+		    <div>
+		      <span className="heading">Title</span>
+		      <ComplexComponent foo="bar" />
+		    </div>
+		  )
+		}
+		```
+	+ 做浅渲染测试是这样的：
+		```javascript
+		import ShallowRenderer from 'react-test-renderer/shallow';
+		const renderer = new ShallowRenderer();
+		renderer.render(<MyComponent />);
+		const result = renderer.getRenderOutput();
+		expect(result.type).toBe('div');
+		expect(result.props.children).toEqual([
+		  <span className="heading">Title</span>,
+		  <ComplexComponent foo="bar" />,
+		]);
+		```
+3. 全渲染机制
+	+	全渲染（full rendering）就是完整渲染出当前组件及其所有的子组件，就像在真实浏览器中渲染那样。当组件内部直接改变了DOM时，就需要使用全渲染来测试。全渲染需要真实地模拟DOM环境，流行的做法有以下几种。
+		1) 使用JSDOM：使用JavaScript模拟DOM环境，能满足90%的使用场景。这是Jest内部所使用的全渲染框架。
+		2) 使用Cheerio：类似JSDOM，更轻的实现，类似jQuery的语法。这是Enzyme内部使用的全渲染框架。
+		3) 使用Karma：在真实的浏览器中执行测试，也支持在多个浏览器中依次执行测试，使用的是真实DOM环境，但速度稍慢。
+4. 自动化测试
 	+ 现在是时候把整个流程自动化起来了，你需要一个持续集成服务器(CI)来把整个流程自动化。如果使用GitHub或Gitlab来管理代码，你可以使用Travis CI或Circle CI。
 _________
 # 解读React源码
