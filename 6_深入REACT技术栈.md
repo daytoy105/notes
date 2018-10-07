@@ -473,8 +473,7 @@ _______
 				  return cart;
 				};
 				/*
-				在执行addToCart方法的时候，改变了originalCart对象。尽管我们返回了新对象，但因为在JavaScript中对象是引用，
-				因此原来的对象也改变了。这就产生了副作用。
+				在执行addToCart方法的时候，改变了originalCart对象。尽管我们返回了新对象，但因为在JavaScript中对象是引用，因此原来的对象也改变了。这就产生了副作用。
 				*/
 				```
 			+ 我们提出了Immutable的概念，让参数中的引用重新复制。这里我们借用了lodash的cloneDeep方法来作深拷贝。
@@ -539,8 +538,7 @@ _______
 			```javascript
 			<Item items={this.props.items.filter(item => item.val > 30)} />
 			/*
-			我们可以马上想到始终让对象或数组保持在内存中就可以增加命中率。但保持对象引用不符合函数式编程的原则，
-			这为函数带来了副作用
+			我们可以马上想到始终让对象或数组保持在内存中就可以增加命中率。但保持对象引用不符合函数式编程的原则，这为函数带来了副作用
 			*/
 			```
 		2) 设置 props 方法并通过事件绑定在元素上
@@ -560,8 +558,8 @@ _______
 			}
 			//上面的子组件JSX部分翻译过来，其实是：
 			<Item children={React.createElement('span', {}, 'Arcthur')} />
-			/*显然，Item组件不论什么情况下都会重新渲染。那么，怎么避免Item组件的重复渲染呢？
-			很简单，我们给NameItem设置PureRender，也就是说提到父级来判断：
+			/*
+			  显然，Item组件不论什么情况下都会重新渲染。那么，怎么避免Item组件的重复渲染呢？很简单，我们给NameItem设置PureRender，也就是说提到父级来判断：
 			*/
 			```
 			```javascript
@@ -637,9 +635,7 @@ _______
 		```javascript
 		Immutable.is(map1, map2); // => true
 		/*
-		Immutable.is比较的是两个对象的hashCode或valueOf(对于JavaScript对象)。
-		由于Immutable内部使用了trie数据结构来存储，只要两个对象的hashCode相等，值就是一样的。
-		这样的算法避免了深度遍历比较，因此性能非常好。
+		Immutable.is比较的是两个对象的hashCode或valueOf(对于JavaScript对象)。由于Immutable内部使用了trie数据结构来存储，只要两个对象的hashCode相等，值就是一样的。这样的算法避免了深度遍历比较，因此性能非常好。
 		*/
 		```
 	+ Immutable与cursor
@@ -648,7 +644,7 @@ _______
 		import Immutable from 'immutable';
 		import Cursor from 'immutable/contrib/cursor';
 		let data = Immutable.fromJS({ a: { b: { c: 1 } } });
-		// 让 cursor 指向 { c: 1 }
+		  // 让 cursor 指向 { c: 1 }
 		let cursor = Cursor.from(data, ['a', 'b'], newData => {
 		  // 当 cursor 或其子 cursor 执行更新时调用
 		  console.log(newData);
@@ -667,8 +663,7 @@ _______
 			  shouldComponentUpdate(nextProps, nextState) {
 			    const thisProps = this.props || {};
 			    const thisState = this.state || {};
-			    if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
-					Object.keys(thisState).length !== Object.keys(nextState).length) {
+			    if (Object.keys(thisProps).length !== Object.keys(nextProps).length || Object.keys(thisState).length !== Object.keys(nextState).length) {
 			      return true;
 			    }
 			    for (const key in nextProps) {
@@ -838,10 +833,10 @@ _________
 ### 生命周期的管理艺术
 <br>&ensp;&ensp;&ensp;&ensp;React的主要思想是通过构建可复用组件来构建用户界面。所谓组件，其实就是有限状态机(FSM)，通过状态渲染对应的界面，且每个组件都有自己的生命周期，它规定了组件的状态和方法需要在哪个阶段改变和执行。
 1. 初探React生命周期
-	1) 当首次挂载组件时，按顺序执行，getDefaultProps、getInitialState、componentWillMount、render和componentDidMount。
-	2) 当卸载组件时，执行 componentWillUnmount。
-	3) 当重新挂载组件时，此时按顺序执行getInitialState、componentWillMount、render和componentDidMount，但并不执行getDefaultProps。
-	4) 当再次渲染组件时，组件接受到更新状态，此时按顺序执行componentWillReceiveProps、shouldComponentUpdate、componentWillUpdate、render和componentDidUpdate。
+	1) 当`首次挂载`组件时，按顺序执行，getDefaultProps、getInitialState、componentWillMount、render和componentDidMount。
+	2) 当`卸载`组件时，执行 componentWillUnmount。
+	3) 当`重新挂载`组件时，此时按顺序执行getInitialState、componentWillMount、render和componentDidMount，但并不执行getDefaultProps。
+	4) 当`再次渲染`组件时，组件接受到更新状态，此时按顺序执行componentWillReceiveProps、shouldComponentUpdate、componentWillUpdate、render和componentDidUpdate。
 2. 详解React生命周期
 	+ 自定义组件(ReactCompositeComponent)的生命周期主要通过3个阶段进行管理——MOUNTING、RECEIVE_PROPS和UNMOUNTING。
 	+ 这3个阶段对应3种方法，分别为：mountComponent、updateComponent和unmountComponent，每个方法都提供了几种处理方法，其中带will前缀的方法在进入状态之前调用，带did前缀的方法在进入状态之后调用。3个阶段共包括5种处理方法，还有两种特殊状态的处理方法。
@@ -859,14 +854,14 @@ _________
 	1) 阶段一：MOUNTING
 		+ mountComponent负责管理生命周期中的getInitialState、componentWillMount、render和componentDidMount。
 		+ 由于getDefaultProps是通过构造函数进行管理的，所以也是整个生命周期中最先开始执行的。而mountComponent只能望洋兴叹，无法调用到getDefaultProps。这就解释了为何getDefaultProps只执行一次。
-		+ 若存在componentWillMount，则执行。如果此时在componentWillMount中调用setState方法，是不会触发re-render的，而是会进行state合并，且inst.state = this.\_processPendingState(inst.props, inst.context)是在componentWillMount之后执行的，因此componentWillMount中的this.state 并不是最新的，在render中才可以获取更新后的this.state。
-		+ 因此，React是利用更新队列this.\_pendingStateQueue以及更新状态this.\_pendingReplaceState和this.\_pendingForceUpdate来实现setState的异步更新机制
+		+ 若存在`componentWillMount`，则执行。如果此时在componentWillMount中调用setState方法，是不会触发re-render的，而是会进行state合并，且inst.state = this.\_processPendingState(inst.props, inst.context)是在componentWillMount之后执行的，因此componentWillMount中的this.state 并不是最新的，在render中才可以获取更新后的this.state。
+		+ 因此，React是利用更新队列`this._pendingStateQueue`以及更新状态`this._pendingReplaceState`和`this._pendingForceUpdate`来实现setState的异步更新机制
 		+ mountComponent本质上是通过递归渲染内容的，由于递归的特性，父组件的componentWillMount在其子组件的componentWillMount之前调用，而父组件的componentDidMount在其子组件的componentDidMount之后调用
 			<br>`P componentWillMount -> P render -> C componentWillMount ->C render -> C componentDidMount -> P componentDidMount`
 	2) 阶段二：RECEIVE_PROPS
 		+ updateComponent负责管理生命周期中的componentWillReceiveProps、shouldComponentUpdate、componentWillUpdate、render和componentDidUpdate。
-		+ 若存在componentWillReceiveProps，则执行。如果此时在componentWillReceiveProps中调用setState，是不会触发re-render的，而是会进行state合并。
-		+ 禁止在shouldComponentUpdate和componentWillUpdate中调用setState，这会造成循环调用，直至耗光浏览器内存后崩溃。
+		+ 若存在`componentWillReceiveProps`，则执行。如果此时在componentWillReceiveProps中调用setState，是不会触发re-render的，而是会进行state合并。
+		+ 禁止在`shouldComponentUpdate`和`componentWillUpdate`中调用setState，这会造成循环调用，直至耗光浏览器内存后崩溃。
 		+ updateComponent本质上也是通过递归渲染内容的，由于递归的特性，父组件的componentWillUpdate是在其子组件的componentWillUpdate之前调用的，而父组件的 componentDidUpdate也是在其子组件的componentDidUpdate之后调用的。
 			<br>`P shouldComponentUpdate -> P componentWillUpdate -> P render ->  C shouldComponentUpdate -> C componentWillUpdate ->C render -> C componentDidUpdate -> P componentDidUpdate`
 	3) 阶段三：UNMOUNTING
@@ -877,10 +872,10 @@ _________
 	+ 无状态组件没有状态，没有生命周期，只是简单地接受props渲染生成DOM结构，是一个纯粹为渲染而生的组件。由于无状态组件有简单、便捷、高效等诸多优点，所以 如果可能的话，请尽量使用无状态组件。
 ### 解密setState 机制
 1. setState异步更新
-	+ setState通过一个队列机制实现state更新。当执行setState时，会将需要更新的state合并后放入状态队列，而不会立刻更新this.state，队列机制可以高效地批量更新state。
+	+ setState通过一个`队列机制`实现state更新。当执行setState时，会将需要更新的state合并后放入状态队列，而不会立刻更新this.state，队列机制可以高效地批量更新state。
 2. setState循环调用风险
-	+ 当调用setState时，实际上会执行enqueueSetState方法，并对partialState以及_pendingStateQueue更新队列进行合并操作，最终通过enqueueUpdate执行state更新。
-	+ 而performUpdateIfNecessary方法会获取_pendingElement、\_pendingStateQueue、\_pendingForceUpdate，并调用receiveComponent和updateComponent方法进行组件更新。
+	+ 当调用setState时，实际上会执行`enqueueSetState`方法，并对partialState以及_pendingStateQueue更新队列进行合并操作，最终通过`enqueueUpdate`执行state更新。
+	+ 而performUpdateIfNecessary方法会获取`_pendingElement`、`_pendingStateQueue`、`_pendingForceUpdate`，并调用receiveComponent和updateComponent方法进行组件更新。
 	+ 如果在shouldComponentUpdate或componentWillUpdate方法中调用setState ，此时this.\_pendingStateQueue != null，则performUpdateIfNecessary方法就会调用updateComponent方法进行组件更新，但updateComponent方法又会调用shouldComponentUpdate和componentWillUpdate方法，因此造成循环调用，使得浏览器内存占满后崩溃。
 	+ setState的源码
 		```javascript
@@ -907,8 +902,7 @@ _________
 		    ReactReconciler.receiveComponent(this, this._pendingElement, transaction, this._context);
 		  }
 		  if (this._pendingStateQueue !== null || this._pendingForceUpdate) {
-		    this.updateComponent(transaction, this._currentElement, this._currentElement,
-				  this._context, this._context);
+		    this.updateComponent(transaction, this._currentElement, this._currentElement, this._context, this._context);
 		  }
 		}
 		/*
@@ -962,12 +956,8 @@ _________
 	  }
 	}
 	/*
-	a) componentDidMount中调用setState时，batchingStrategy的isBatchingUpdates已经被设为true，
-	所以两次setState的结果并没有立即生效，而是被放进了dirtyComponents中。
-	这也解释了两次打印this.state.val都是0的原因，因为新的 state还没有被应用到组件中。
-	b) setTimeout中的两次setState，因为没有前置的batchedUpdate调用，所以batchingStrategy的isBatchingUpdates
-	标志位是false，也就导致了新的state马上生效，没有走到dirtyComponents分支。也就是说，setTimeout中第一次执行
-	setState时，this.state.val为1，而setState完成后打印时this.state.val变成了2。第二次的setState同理。
+	a) componentDidMount中调用setState时，batchingStrategy的isBatchingUpdates已经被设为true，所以两次setState的结果并没有立即生效，而是被放进了dirtyComponents中。这也解释了两次打印this.state.val都是0的原因，因为新的 state还没有被应用到组件中。
+	b) setTimeout中的两次setState，因为没有前置的batchedUpdate调用，所以batchingStrategy的isBatchingUpdates标志位是false，也就导致了新的state马上生效，没有走到dirtyComponents分支。也就是说，setTimeout中第一次执行setState时，this.state.val为1而setState完成后打印时this.state.val变成了2。第二次的setState同理。
 	*/
 	```
 ### diff 算法
@@ -1081,18 +1071,14 @@ _________
 	```javascript
 	dispatch = compose(...chain)(store.dispatch);
 	/*
-	其中compose是函数式编程中的组合，它将chain中的所有匿名函数[f1, f2, ... , fx, ..., fn]组装成一个新的函数，
-	即新的dispatch。当新dispatch 执行时，[f1, f2, ... , fx, ..., fn]，从右到左依次执行。
+	其中compose是函数式编程中的组合，它将chain中的所有匿名函数[f1, f2, ... , fx, ..., fn]组装成一个新的函数，即新的dispatch。当新dispatch 执行时，[f1, f2, ... , fx, ..., fn]，从右到左依次执行。
 	Redux中compose的实现是下面这样的，当然实现方式并不唯一：
 	*/
 	function compose(...funcs) {
 	  return arg => funcs.reduceRight((composed, f) => f(composed), arg);
 	}
 	/*
-	compose(...funcs) 返回的是一个匿名函数，其中funcs就是chain数组。当调用reduceRight时，
-	依次从funcs数组的右端取一个函数fx拿来执行，fx的参数composed就是前一次fx+1执行的结果，
-	而第一次执行的fn(n 代表 chain 的长度)的参数 arg就是store.dispatch。
-	所以，当compose执行完后，我们得到的dispatch 是这样的，假设n = 3：
+	compose(...funcs) 返回的是一个匿名函数，其中funcs就是chain数组。当调用reduceRight时，依次从funcs数组的右端取一个函数fx拿来执行，fx的参数composed就是前一次fx+1执行的结果，而第一次执行的fn(n 代表 chain 的长度)的参数 arg就是store.dispatch。所以，当compose执行完后，我们得到的dispatch 是这样的，假设n = 3：
 	*/
 	dispatch = f1(f2(f3(store.dispatch))));
 	```

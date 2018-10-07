@@ -4,9 +4,9 @@
 	```javascript
 	var a = [];
 	for (let i = 0; i < 10; i++) {
-	   a[i] = function() {
-	     console.log(i);
-	   };
+	  a[i] = function() {
+	    console.log(i);
+	  };
 	}
 	a[6](); // 6  let 声明, 块级作用域, i在循环作用域内
 	```
@@ -94,8 +94,7 @@ ________
 	baz // "aaa"
 	foo // error: foo is not defined
 	/*
-	对象的解构赋值的内部机制，是先找到同名属性，然后再赋给对应的变量。真正被赋值的是后者.
-	foo是匹配的模式，baz才是变量
+	对象的解构赋值的内部机制，是先找到同名属性，然后再赋给对应的变量。真正被赋值的是后者。foo是匹配的模式，baz才是变量
 	*/
 	```
 + 解构赋值的规则是，只要等号右边的值不是对象或数组，就先将其转为对象。由于undefined和null无法转为对象，所以对它们进行解构赋值，都会报错。
@@ -152,7 +151,7 @@ __________
 _____________
 # 正则的扩展
 1. u修饰符
-	+ ES6对正则表达式添加了u修饰符，含义为"Unicode模式"，用来正确处于大于\uFFFF的Unicode字符。
+	+ ES6对正则表达式添加了u修饰符，含义为"Unicode模式"，用来正确处理大于\uFFFF的Unicode字符。
 	+ ES6新增了使用大括号表示Unicode字符，这种表示法在正则表达式中必须加上u修饰符，才能识别当中的大括号，否则会被解读为量词。
 
 # 函数的扩展
@@ -275,8 +274,7 @@ ___________________
 	a3[0] === a1[0] // true
 	a4[0] === a1[0] // true
 	/*
-	a3和a4是用两种不同方法合并而成的新数组，但是它们的成员都是对原数组成员的引用，这就是浅拷贝。
-	如果修改了原数组的成员，会同步反映到新数组。
+	a3和a4是用两种不同方法合并而成的新数组，但是它们的成员都是对原数组成员的引用，这就是浅拷贝。如果修改了原数组的成员，会同步反映到新数组。
 	*/
 	```
 4. 与解构赋值结合
@@ -409,9 +407,7 @@ Array.prototype.copyWithin(target, start = 0, end = this.length)
 3. 下面代码用来检查当前环境是否支持该方法，如果不支持，部署一个简易的替代版本。
 	```javascript
 	const contains = (() =>
-	  Array.prototype.includes ?
-		(arr, value) => arr.includes(value) :
-		(arr, value) => arr.some(el => el === value)
+	  Array.prototype.includes ? (arr, value) => arr.includes(value) : (arr, value) => arr.some(el => el === value)
 	)();
 	contains(['foo', 'bar'], 'baz'); // => false
 	```
@@ -497,7 +493,7 @@ Array.prototype.copyWithin(target, start = 0, end = this.length)
 	Object.defineProperty(Object, 'is', {
 	  value: function(x, y) {
 	    if (x === y) {
-	    // 针对+0 不等于 -0的情况
+	      // 针对+0 不等于 -0的情况
 	      return x !== 0 || 1 / x === 1 / y;
 	    }
 	    // 针对NaN的情况
@@ -531,8 +527,7 @@ Array.prototype.copyWithin(target, start = 0, end = this.length)
 		obj1.a.b = 2;
 		obj2.a.b // 2
 		/*
-		源对象obj1的a属性的值是一个对象，Object.assign拷贝得到的是这个对象的引用。
-		这个对象的任何变化，都会反映到目标对象上面。
+		源对象obj1的a属性的值是一个对象，Object.assign拷贝得到的是这个对象的引用。这个对象的任何变化，都会反映到目标对象上面。
 		*/
 		```
 3. 同名属性的替换
@@ -776,8 +771,7 @@ Array.prototype.copyWithin(target, start = 0, end = this.length)
 	}
 	getArea(shapeType.triangle, { width: 100, height: 100 });
  	/*
-	如果仔细分析，可以发现shapeType.triangle等于哪个值并不重要，只要确保不会跟其他shapeType属性的值冲突即可。
-	因此，这里就很适合改用Symbol值。
+	如果仔细分析，可以发现shapeType.triangle等于哪个值并不重要，只要确保不会跟其他shapeType属性的值冲突即可。因此，这里就很适合改用Symbol值。
  	*/
  	const shapeType = {
 	  triangle: Symbol()
@@ -904,8 +898,7 @@ ____________________
 	```javascript
 	var proxy = new Proxy(target, handler);
 	/*
-  new Proxy()表示生成一个Proxy实例，target参数表示所要拦截的目标对象，handler参数也是一个对象，用来定制拦截行为。
-	如果handler没有设置任何拦截，那就等同于直接通向原对象。
+  new Proxy()表示生成一个Proxy实例，target参数表示所要拦截的目标对象，handler参数也是一个对象，用来定制拦截行为。如果handler没有设置任何拦截，那就等同于直接通向原对象。
 	*/
 	```
 + Proxy 实例也可以作为其他对象的原型对象。
@@ -1302,10 +1295,8 @@ const promise = new Promise(function(resolve, reject) {
 const p = Promise.all([p1, p2, p3]);
 /*
 p的状态由p1、p2、p3决定，分成两种情况。
-a) 只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，
-传递给p的回调函数。
-b) 只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，
-会传递给p的回调函数。
+a) 只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
+b) 只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
 */
 ```
 ### Promise.race()
@@ -1388,8 +1379,7 @@ ______________
 		b.next(12) // { value:8, done:false }
 		b.next(13) // { value:42, done:true }
 		/*
-		注意，由于next方法的参数表示上一个yield表达式的返回值，所以在第一次使用next方法时，传递参数是无效的。
-		V8引擎直接忽略第一次使用next方法时的参数，只有从第二次使用next方法开始，参数才是有效的。
+		注意，由于next方法的参数表示上一个yield表达式的返回值，所以在第一次使用next方法时，传递参数是无效的。V8引擎直接忽略第一次使用next方法时的参数，只有从第二次使用next方法开始，参数才是有效的。
 		*/
 		```
 4. for...of循环
@@ -1597,8 +1587,7 @@ ______________
 		run(g);
 		/*
 		run函数，就是一个Generator函数的自动执行器。内部的next函数就是Thunk的回调函数。
-		next函数先将指针移到Generator函数的下一步(gen.next方法)，然后判断Generator函数是否结束(result.done属性)，
-		如果没结束，就将next函数再传入Thunk函数(result.value属性)，否则就直接退出。
+		next函数先将指针移到Generator函数的下一步(gen.next方法)，然后判断Generator函数是否结束(result.done属性)，如果没结束，就将next函数再传入Thunk函数(result.value属性)，否则就直接退出。
 		*/
 		```
 3. co模块
@@ -1688,8 +1677,7 @@ async function f() {
 	let foo = await getFoo();
 	let bar = await getBar();
 	/*
-	getFoo和getBar是两个独立的异步操作(即互不依赖)，被写成继发关系。这样比较耗时，
-	因为只有getFoo完成以后，才会执行getBar，完全可以让它们同时触发。
+	getFoo和getBar是两个独立的异步操作(即互不依赖)，被写成继发关系。这样比较耗时，因为只有getFoo完成以后，才会执行getBar，完全可以让它们同时触发。
 	*/
 	let [foo, bar] = await Promise.all([getFoo(), getBar()]);
 	```
@@ -1838,8 +1826,7 @@ const logger = new Logger();
 const { printName } = logger;
 printName(); // TypeError: Cannot read property 'print' of undefined
 /*
- 此时this会指向该方法运行时所在的环境
- 解决方法： 绑定this， bind()方法 或 箭头函数
+ 此时this会指向该方法运行时所在的环境。解决方法： 绑定this， bind()方法 或 箭头函数
 */
 ```
 ### Class的静态方法
@@ -2022,9 +2009,7 @@ __________
 	var a = 1;
 	export default a
 	/*
-	本质上，export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。
-	等同于 export {a as default} 。正是因为export default命令其实只是输出一个叫做default的变量，
-	所以它后面不能跟变量声明语句。
+	本质上，export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。等同于 export {a as default} 。正是因为export default命令其实只是输出一个叫做default的变量，所以它后面不能跟变量声明语句。
 	*/
 	```
 +  一个模块只能有一个默认输出，因此export defaut命令只能使用一次
@@ -2117,7 +2102,7 @@ __________
 1. Node要求ES6模块采用.mjs后缀文件名。也就是说，只要脚本文件里面使用import或者export命令，那么就必须采用.mjs后缀名
 2. 内部变量
 	1) 首先，就是this关键字。ES6模块之中，顶层的this指向undefined；CommonJS模块的顶层this指向当前模块，这是两者的一个重大差异。
-	2) 其次，以下这些顶层变量在ES6模块之中都是不存在的。arguments、require、module、exports、__filename、__dirname
+	2) 其次，以下这些顶层变量在ES6模块之中都是不存在的。arguments、require、module、exports、\_\_filename、\_\_dirname
 3. ES6模块加载CommonJS模块
 	+ CommonJS 模块的输出都定义在module.exports这个属性上面。Node的import命令加载CommonJS模块，Node会自动将module.exports属性，当作模块的默认输出，即等同于export default xxx。
 	+ import命令加载上面的模块，module.exports会被视为默认输出。
