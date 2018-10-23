@@ -421,7 +421,7 @@ ________
 	  var F = function() {}
 	  F.prototype = P.prototype;
 	  C.prototype = new F();
-		C.uber = P.prototype;
+	  C.uber = P.prototype;
 	}
 	```
 + 重置构造函数指针(圣杯模式)
@@ -677,27 +677,18 @@ ________
 	```javascript
 	var oldnode = document.getElementById('result'),
 	clone = oldnode.cloneNode(true);  // ture 深度克隆
-	//处理克隆对象
-	oldnode.parentNode.replaceChild(clone, oldnode)
+	oldnode.parentNode.replaceChild(clone, oldnode)  //处理克隆对象
 	```
 ### 载入策略
 1. 延迟加载
 	+ 关于在页面载入完成后，转入外部文件的这种技术称为延迟加载。通常将一大段代码切为两部分是十分有益的：一部分代码是用于初始化页面并将事件处理器附加到UI元素上的。第二部分代码只在用户交互或者其他条件下才用得上。
 	+ 这样做的目的是希望渐进式地载入页面，尽可能快地提供目前需要使用的信息，而其余的内容可以在用户浏览该页面时在后台载入。
-	+ 载入第二部分JavaScript代码的方法非常简单，只需要再一次为head或者body添加动态脚本元素。
-		```javascript
-		window.onload = function(){
-		  var script = document.createElement("script");
-		  script.src = "xx.js";
-		  document.documentElement.firstChild.appendChild(script)
-		}
-		```
+	+ 载入第二部分JavaScript代码的方法非常简单，只需要再一次为head或者body添加动态脚本元素。`window.onload = function(){}`
 2. 按需加载
 	```javascript
 	function require(file, callback) {
 	var script = document.createElement("script");
-	// IE
-	script.onreadystatechange = function() {
+	script.onreadystatechange = function() {  // IE
 	  if (script.readyState === 'loaded' || script.readyState === 'complate') {
 	    script.onreadystatechange = null;
 	    callback();

@@ -1,7 +1,7 @@
 # 初入React世界
 ### react简介
 1. 专注视图层
-	+ React并不是完整的MVC/MVVM框架，它专注于提供清晰、简洁的View（视图）层解决方案。而又与模板引擎不同，React不仅专注于解决View层的问题，又是一个包括View和Controller的库。对于复杂的应用，可以根据应用场景自行选择业务层框架，并根据需要搭配Reat-Router、Redux等来使用。
+	+ React并不是完整的MVC/MVVM框架，它专注于提供清晰、简洁的View（视图）层解决方案。而又与模板引擎不同，React不仅专注于解决View层的问题，又是一个包括View和Controller的库。对于复杂的应用，可以根据应用场景自行选择业务层框架，并根据需要搭配React-Router、Redux等来使用。
 2. Virtual DOM
 	+ React把真实DOM树转换成JavaScript对象树，也就是Virtual DOM。
 	+ 每次数据更新后，重新计算Virtual DOM，并和上一次生成的Virtual DOM做对比，对发生变化的部分做批量更新。React也提供了直观的shouldComponentUpdate生命周期回调，来减少数据变化后不必要的Virtual DOM对比过程，以保证性能。
