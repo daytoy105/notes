@@ -67,10 +67,10 @@
 	```javascript
 	// 获得顶层对象的方法
 	var getGlobal = function(){
-    if(typeof self !== 'undefined'){ return self;}
-    if(typeof window !=='undefined'){ return window;}
-    if(typeof global !=='undefined'){ return global;}
-    throw new Error('unable to locate global object')
+	  if(typeof self !== 'undefined'){ return self;}
+	  if(typeof window !=='undefined'){ return window;}
+	  if(typeof global !=='undefined'){ return global;}
+	  throw new Error('unable to locate global object')
 	}
 	```
 ________
@@ -1601,8 +1601,8 @@ ______________
 		```
 	2) co模块的原理
 		+ Generator就是一个异步操作的容器。它的自动执行需要一种机制，当异步操作有了结果，能够自动交回执行权。两种方法可以做到这一点。
-			— 回调函数。将异步操作包装成Thunk函数，在回调函数里面交回执行权。
-			— Promise对象。将异步操作包装成Promise对象，用then方法交回执行权。
+			+ 回调函数。将异步操作包装成Thunk函数，在回调函数里面交回执行权。
+			+ Promise对象。将异步操作包装成Promise对象，用then方法交回执行权。
 		+ co模块其实就是将两种自动执行器(Thunk函数和Promise对象)，包装成一个模块。使用co的前提条件是，Generator函数的yield命令后面，只能是Thunk函数或Promise对象。
 	3) 基于Promise对象的自动执行
 		```javascript

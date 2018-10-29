@@ -188,6 +188,8 @@
 		  }
 		}
 		```
+	+ props.children vs React.Chilren
+		<br> props.children, 表示组件的子节点，可以是任何的类型，比如数组、函数、对象，undefined等。若在props.children上调用map方法等，可能会出错。React提供了一系列的函数来使得操作children更加方便，如Reat.Children.map()，传递props.children时，可以保证调用方法的正常运行。
 ### React生命周期
 &ensp;&ensp;&ensp;&ensp;React组件的生命周期根据广义定义描述，可以分为挂载、渲染和卸载这几个阶段。当渲染后的组件需要更新时，我们会重新去渲染组件，直至卸载。因此，我们可以把React生命周期分成两类：
 1) 当组件在挂载或卸载时；
@@ -833,10 +835,12 @@ _________
 ### 生命周期的管理艺术
 <br>&ensp;&ensp;&ensp;&ensp;React的主要思想是通过构建可复用组件来构建用户界面。所谓组件，其实就是有限状态机(FSM)，通过状态渲染对应的界面，且每个组件都有自己的生命周期，它规定了组件的状态和方法需要在哪个阶段改变和执行。
 1. 初探React生命周期
-	1) 当`首次挂载`组件时，按顺序执行，getDefaultProps、getInitialState、componentWillMount、render和componentDidMount。
+	1) 当`首次挂载`组件时，按顺序执行，static defaultProps、constructor、componentWillMount、render和componentDidMount。
 	2) 当`卸载`组件时，执行 componentWillUnmount。
-	3) 当`重新挂载`组件时，此时按顺序执行getInitialState、componentWillMount、render和componentDidMount，但并不执行getDefaultProps。
+	3) 当`重新挂载`组件时，此时按顺序执行constructor、componentWillMount、render和componentDidMount，但并不执行statuc defaultProps。
 	4) 当`再次渲染`组件时，组件接受到更新状态，此时按顺序执行componentWillReceiveProps、shouldComponentUpdate、componentWillUpdate、render和componentDidUpdate。
+	5) 在进行服务器端渲染时，只会调用componentWillMount()
+	6) 当shouldComponentUpdate()返回false时，render、componentWillUpdate、componentDidUpdate
 2. 详解React生命周期
 	+ 自定义组件(ReactCompositeComponent)的生命周期主要通过3个阶段进行管理——MOUNTING、RECEIVE_PROPS和UNMOUNTING。
 	+ 这3个阶段对应3种方法，分别为：mountComponent、updateComponent和unmountComponent，每个方法都提供了几种处理方法，其中带will前缀的方法在进入状态之前调用，带did前缀的方法在进入状态之后调用。3个阶段共包括5种处理方法，还有两种特殊状态的处理方法。
@@ -852,8 +856,8 @@ _________
 		shouldComponentUpdate(nextProps, nextState)
 		```
 	1) 阶段一：MOUNTING
-		+ mountComponent负责管理生命周期中的getInitialState、componentWillMount、render和componentDidMount。
-		+ 由于getDefaultProps是通过构造函数进行管理的，所以也是整个生命周期中最先开始执行的。而mountComponent只能望洋兴叹，无法调用到getDefaultProps。这就解释了为何getDefaultProps只执行一次。
+		+ mountComponent负责管理生命周期中的constructor、componentWillMount、render和componentDidMount。
+		+ 由于static defaultProps是通过构造函数进行管理的，所以也是整个生命周期中最先开始执行的。而mountComponent只能望洋兴叹，无法调用到static defaultProps。这就解释了为何static defaultProps只执行一次。
 		+ 若存在`componentWillMount`，则执行。如果此时在componentWillMount中调用setState方法，是不会触发re-render的，而是会进行state合并，且inst.state = this.\_processPendingState(inst.props, inst.context)是在componentWillMount之后执行的，因此componentWillMount中的this.state 并不是最新的，在render中才可以获取更新后的this.state。
 		+ 因此，React是利用更新队列`this._pendingStateQueue`以及更新状态`this._pendingReplaceState`和`this._pendingForceUpdate`来实现setState的异步更新机制
 		+ mountComponent本质上是通过递归渲染内容的，由于递归的特性，父组件的componentWillMount在其子组件的componentWillMount之前调用，而父组件的componentDidMount在其子组件的componentDidMount之后调用
@@ -1076,12 +1080,14 @@ _________
 	*/
 	function compose(...funcs) {
 	  return arg => funcs.reduceRight((composed, f) => f(composed), arg);
+		//return funcs.reduce((a, b) => (...args) => a(b(...args)))
 	}
 	/*
 	compose(...funcs) 返回的是一个匿名函数，其中funcs就是chain数组。当调用reduceRight时，依次从funcs数组的右端取一个函数fx拿来执行，fx的参数composed就是前一次fx+1执行的结果，而第一次执行的fn(n 代表 chain 的长度)的参数 arg就是store.dispatch。所以，当compose执行完后，我们得到的dispatch 是这样的，假设n = 3：
 	*/
 	dispatch = f1(f2(f3(store.dispatch))));
 	```
+	+ 中间件的调用顺序，外层(f1)先进入，执行next()之前的代码，遇到next()则进入下一层中间件(f2)，一直往里执(f3)，若(f3)next()方法之后没有下一个中间件，则将从里到外逆顺返回执行上一个中间件(f2)next()后面的方法，一直到最外层(f1)
 4. 在middleware中调用dispatch会发生什么
 	+ 在middleware中调用store.dispatch()和在其他任何地方调用的效果一样，而是middleware中调用next()，效果是进入下一个middleware。如果在middleware一直调用store.dipatch(action)，就会形成无限循环了。
 	+ Redux Thunk
@@ -1455,7 +1461,7 @@ _________
 
 ### React.Component
 1. 组件生命周期
-	+ 新增加三个生命周期方法：componentDidCatch(error,info) getDerivedStateFromProps(props,state)、getSnapshotBeforeUpdate(prevProps, prevState)
+	+ 新增加三个生命周期方法：componentDidCatch(error,info) static getDerivedStateFromProps(props,state)、getSnapshotBeforeUpdate(prevProps, prevState)
 	+ 三个标记为unsafe的方法，在React 17版本中需加前缀"UNSAFE_": componentWillMount()、componentWillUpdate(nextProps, nextState)、componentWillReceiveProps(nextProps)。共同点：这三个方法在运行中可能会调用多次。
 	1) Mounting
 		+ constructor()
@@ -1492,8 +1498,12 @@ _________
 	+ 与render()相同，但用于混合容器，该容器的HTML内容是由ReactDOMServer渲染的。React将尝试将事件监听器附加到现有的标记。
 3. findDOMNode()
 	<br>`ReactDOM.findDOMNode(component)`
-	+ 在组件挂载后可访问DOM节点，但是不能用于render()等未加载周期中
-	+ 若render()返回多个元素如Fragment, findDOMNode()将返回第一个非空的子节点
+	+ 在组件挂载后可访问DOM节点。
+	+ 缺点：
+		+ 但是这个方法会破坏组件的抽象封装，不利用组件的利用
+		+ 若render()返回多个元素如Fragment, findDOMNode()将返回第一个非空的子节点。
+		+ findDOMNode()不能在子节点渲染变化后得到正确的值。
+	+ 最好使用`refs`来获取操作DOM
 4. createPortal(): 将子节点渲染到父组件DOM层次结构之外的DOM节点
 	<br> `ReactDOM.createPortal(child, container)`
 	+ 对于portal的一个典型用例是当父组件有overflow: hidden或z-index样式，但你需要子组件能够在视觉上"跳出(break out)"其容器。例如，对话框、hovercards以及提示框。
@@ -1507,6 +1517,44 @@ _________
 		```
 5. unmountComponentAtNode()
 	<br>`ReactDOM.unmountComponentAtNode(container)`
+### React 16.6
+1. React.memo， 和pureComponent和shouldComponentUpdate()相同的效果
+	```javascript
+	const MyComponent = React.memo(function MyComponent(props) {
+	  /* only rerenders if props change */
+	});
+	```
+2. React.lazy，支持suspense的代码分割, Suspense，异步渲染，（服务器端渲染尚未实现该功能）
+	```javascript
+	import React, {lazy, Suspense} from 'react';
+	const OtherComponent = lazy(() => import('./OtherComponent'));
+	function MyComponent() {
+	  return (
+	    <Suspense fallback={<div>Loading...</div>}>
+	      <OtherComponent />
+	    </Suspense>
+	  );
+	}
+	```
+3. static contextType， 简化V16.3版本的React.createContext()的使用
+	```javascript
+	class MyClass extends React.Component {
+	  static contextType = MyContext;
+	  componentDidMount() {
+	    let value = this.context;
+	    /* perform a side-effect at mount using the value of MyContext */
+	  }
+	  componentWillUnmount() {
+	    let value = this.context;
+	    /* ... */
+	  }
+	  render() {
+	    let value = this.context;
+	    /* render something based on the value of MyContext */
+	  }
+	}
+	```
+4. static getDerivedStateFromError(error)， 错误处理的静态方法，作用于render()期间，计划用于服务器端的渲染的捕获，但是现在的版本还未实现。
 _____
 
 # 优化技巧
