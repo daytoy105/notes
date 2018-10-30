@@ -189,7 +189,8 @@
 		}
 		```
 	+ props.children vs React.Chilren
-		<br> props.children, 表示组件的子节点，可以是任何的类型，比如数组、函数、对象，undefined等。若在props.children上调用map方法等，可能会出错。React提供了一系列的函数来使得操作children更加方便，如Reat.Children.map()，传递props.children时，可以保证调用方法的正常运行。
+		+  props.children值有三种可能：如果当前组件没有子节点，它就是undefined；如果有一个子节点，数据类型是object ；如果有多个子节点，数据类型就是 array。若直接在props.children上调用map方法等，可能会出错。
+		+ React提供了一系列的函数来使得操作children更加方便，如Reat.Children.map()，传递props.children时，可以保证调用方法的正常运行。
 ### React生命周期
 &ensp;&ensp;&ensp;&ensp;React组件的生命周期根据广义定义描述，可以分为挂载、渲染和卸载这几个阶段。当渲染后的组件需要更新时，我们会重新去渲染组件，直至卸载。因此，我们可以把React生命周期分成两类：
 1) 当组件在挂载或卸载时；
