@@ -27,7 +27,6 @@
 		  }
 		}
 		```
-    + 在React中，到处都是可以复用的元素，这些元素并不是真实的实例，它只是让React告诉开发者想要在屏幕上显示什么。我们无法通过方法去调用这些元素，它们只是不可变的描述对象。
 	2) 组件元素
 		```javascript
 		const Button = ({ color, text }) => {
@@ -55,7 +54,7 @@
 	+ html转义：
 		 `<div dangerouslySetInnerHTML={{__html:'&copy; 2018'}}/>`
 3) element
-	+ 元素是React中最小的构建单元。不同于浏览器的DOM元素，React的元素是一个普通对象，描述了对于一个DOM节点或者组件，在屏幕上呈现的样子。创建一个React元素的成本很低，使用React.createElement()。元素创建之后是不可变的。
+	+ 在React中，到处都是可以复用的元素，这些元素并不是真实的实例，它只是让React告诉开发者想要在屏幕上显示什么。我们无法通过方法去调用这些元素，它们只是不可变的描述对象。
 	+ React.createElement(type, props, children)，返回React元素,其中type的类型：string类型的标签、组件如(class/function)、Fragment。
 	+ React.cloneElement(type, props, children)，复制并返回React元素，其中type的类型为React元素(element)。 key和ref也将会一起拷贝。
 ### React组件
@@ -189,7 +188,7 @@
 		}
 		```
 	+ props.children vs React.Chilren
-		+  props.children值有三种可能：如果当前组件没有子节点，它就是undefined；如果有一个子节点，数据类型是object ；如果有多个子节点，数据类型就是 array。若直接在props.children上调用map方法等，可能会出错。
+		+ props.children值有三种可能：如果当前组件没有子节点，它就是undefined；如果有一个子节点，数据类型是object；如果有多个子节点，数据类型就是array。若直接在props.children上调用map方法等，可能会出错。
 		+ React提供了一系列的函数来使得操作children更加方便，如Reat.Children.map()，传递props.children时，可以保证调用方法的正常运行。
 ### React生命周期
 &ensp;&ensp;&ensp;&ensp;React组件的生命周期根据广义定义描述，可以分为挂载、渲染和卸载这几个阶段。当渲染后的组件需要更新时，我们会重新去渲染组件，直至卸载。因此，我们可以把React生命周期分成两类：
