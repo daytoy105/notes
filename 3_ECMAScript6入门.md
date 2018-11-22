@@ -2045,8 +2045,8 @@ __________
 1. 两个重大差异
 	- CommonJS模块输出的是一个值的拷贝，ES6模块输出的是值的引用。
 	- CommonJS模块是运行时加载，ES6模块是编译时输出接口
-2. 第二个差异是因为CommonJS加载是一个对象(即modele.export属性)，该对象只有在脚本运行完才会生成。而ES6模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
-3. CommonJS模块输出是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。
+2. 第二个差异是因为CommonJS加载是一个`对象`(即modele.export属性)，该对象只有在脚本运行完才会生成。而ES6模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。
+3. CommonJS模块输出是`值的拷`贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。
 	```javascript
 	//lib.js
 	var counter = 3;
@@ -2106,21 +2106,60 @@ __________
 3. ES6模块加载CommonJS模块
 	+ CommonJS 模块的输出都定义在module.exports这个属性上面。Node的import命令加载CommonJS模块，Node会自动将module.exports属性，当作模块的默认输出，即等同于export default xxx。
 	+ import命令加载上面的模块，module.exports会被视为默认输出。
-### CommonJS模块规范 vs AMD模块规范
-1. CommonJS规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。AMD规范则是非同步加载模块，允许指定回调函数
-2. CommonJS特点
-	+ 所有代码都运行在模块作用域，不会污染全局作用域。
-	+ 模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存
-	+ 模块加载的顺序，按照其在代码中出现的顺序。
-3. AMD规范使用define方法定义模块, 浏览器端一般采用AMD规范
+### CommonJS模块规范 vs AMD模块规范 vs CMD模块规范
+1. CommonJS规范
+	+ CommonJS就是一个JavaScript模块化的规范，加载模块是`同步`的,加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作
+	+ 该规范最初是用在服务器端的`node`的，由于Node.js主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以CommonJS规范比较适用。前端的`webpack`也是对CommonJS原生支持的。
+	+ CommonJS特点
+		+ 所有代码都运行在模块作用域，不会污染全局作用域。
+		+ 模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存
+		+ 模块加载的顺序，按照其在代码中出现的顺序。
+	```javascript
+	(function(module, exports) {
+	  exports.multiply = function (n) { return n * 1000 };
+	}(module, module.exports))
+	var f = module.exports.multiply;
+	f(5) // 5000
+	```
+2. AMD(Asynchronous Module Definition，`异步`模块定义)
+	+ AMD规范是非同步加载模块，允许指定`回调函数`，浏览器端一般采用AMD规范。
+	+ AMD规范的实现，通过`define`来定义一个模块，然后使用`require`来加载一个模块, 并且require还支持CommonJS的模块导出方式。
+	+ 优点：适合在浏览器环境中异步加载模块。可以并行加载多个模块。
+	+ 缺点：提高了开发成本，并且不能按需加载，而是必须`提前加载`所有的依赖。
+	```javascript
+	// AMD
+	define(['./a', './b'], function(a, b) {  // 依赖必须一开始就写好
+	  a.doSomething()
+	  b.doSomething()
+	  ...
+	});
+	require([module], callback); // AMD也采用require()语句加载模块，但是不同于CommonJS，它要求两个参数：
+	```
+3. CMD(Common Module Definition，通用模块定义)
+	+ 代码的书写格式如下：`define(factory)`, factory为函数是格式为`define(function(require, exports, module) {})`
+	+ require是同步往下执行，require.async则是异步回调执行。require.async一般用来加载可延迟异步加载的模块。
+	+ exports仅仅是 module.exports的一个引用。在factory内部给exports重新赋值时，并不会改变module.exports的值。因此给exports赋值是无效的，不能用来更改模块接口。对module.exports的赋值需要同步执行，不能放在回调函数里。
+	+ 优点：同样实现了浏览器端的模块化加载。可以`按需加载`，依赖就近。
+	+ 缺点：依赖SPM 打包，模块的加载逻辑偏重。
+	```javascript
+	// CMD
+	define(function(require, exports, module) {
+	  var a = require('./a')
+	  a.doSomething()
+	  var b = require('./b')
+	  b.doSomething()
+	  // ...
+	});
+	```
+
 ### module.exports vs  exports |  export vs export default
 1. module.exports vs  exports
 	+ exports是引用module.exports的值；module.exports初始值为一个空对象{}，所以exports初始值也是{}；module.exports被改变的时候，exports不会被改变，而模块导出的时候，真正导出的执行是module.exports，而不是exports 。
 		```javascript
-		module={
-		  exports:{}
+		module = {
+		  exports: {}
 		}
-		exports=module.exports
+		exports = module.exports
 		```
 	+ 第一种情况，module.exports初始值为空对象，两个函数使用module.exports或exports都一样效果；第二种情况，module.exports初始值不为空对象，只能使用module.exports暴露接口，而不能使用exports暴露，会出现 xxx is not a function错误。
 		```javascript

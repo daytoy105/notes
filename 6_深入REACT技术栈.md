@@ -88,7 +88,7 @@
 	const Button = ({ color = 'blue', text = 'Confirm' }) => (
 	<button className={`btn btn-${color}`}>
 	  <em>{text}</em>
-	  </button>
+	</button>
 	)
 	```
 	+ 无状态组件只传入props和context两个参数；也就是说，它不存在state，也没有生命周期方法，组件本身即是classes方式构建方法中的render方法。
@@ -1461,11 +1461,11 @@ _________
 
 ### React.Component
 1. 组件生命周期
-	+ 新增加三个生命周期方法：componentDidCatch(error,info) static getDerivedStateFromProps(props,state)、getSnapshotBeforeUpdate(prevProps, prevState)
+	+ 新增加三个生命周期方法：componentDidCatch(error,info)、static getDerivedStateFromProps(props,state)、getSnapshotBeforeUpdate(prevProps, prevState)
 	+ 三个标记为unsafe的方法，在React 17版本中需加前缀"UNSAFE_": componentWillMount()、componentWillUpdate(nextProps, nextState)、componentWillReceiveProps(nextProps)。共同点：这三个方法在运行中可能会调用多次。
 	1) Mounting
 		+ constructor()
-	  + static `getDerivedStateFromProps()`
+		+ static `getDerivedStateFromProps()`
 		+ render()
 		+ componentDidMount()：组件挂载后调用
 			<br>获取真实的DOM节点、获取远程数据、添加事件监听器、定时器等
@@ -1482,7 +1482,7 @@ _________
 	3) Unmonting
 		+ componentWillUnmount()
 2. render()
-	1) React elements：返回单一节点元素，如<div /> and <MyComponent />
+	1) React elements：返回单一节点元素，如\<div /> and \<MyComponent />
 	2) Array和Fragment: 返回多个元素
 	3) String和number: 渲染为DOM的文本节点
 	4) Portals: 把子组件挂载到不同的DOM树中
